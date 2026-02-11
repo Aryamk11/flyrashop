@@ -2,6 +2,7 @@ import Image from 'next/image';
 import Link from 'next/link';
 
 export default function ProductCard({ product }: { product: any }) {
+  // Format price with Persian digits if preferred, or just standard Locale
   const formattedPrice = new Intl.NumberFormat('fa-IR').format(product.price);
 
   return (
@@ -14,15 +15,15 @@ export default function ProductCard({ product }: { product: any }) {
           className="object-cover opacity-90 transition group-hover:opacity-100 group-hover:scale-105"
         />
       </div>
-      <div className="p-4">
+      <div className="p-4 text-right">
         <h3 className="text-xl font-bold text-white">{product.title}</h3>
-        <p className="mt-1 text-neon-pink font-mono">{formattedPrice} Toman</p>
+        <p className="mt-1 text-neon-pink font-mono text-lg">{formattedPrice} تومان</p>
         <Link
-          href={`https://wa.me/98912xxxxxxx?text=Product Inquiry: ${product.title}`}
+          href={`https://wa.me/98912xxxxxxx?text=سلام، برای خرید محصول ${product.title} پیام می‌دهم.`}
           target="_blank"
-          className="mt-4 block w-full rounded border border-neon-pink bg-transparent py-2 text-center text-neon-pink transition hover:bg-neon-pink hover:text-white"
+          className="mt-4 block w-full rounded border border-neon-pink bg-transparent py-2 text-center text-neon-pink transition hover:bg-neon-pink hover:text-white font-bold"
         >
-          Inquiry to Buy
+          استعلام خرید
         </Link>
       </div>
     </div>
