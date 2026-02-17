@@ -15,6 +15,8 @@ interface CartContextType {
     isOpen: boolean;
     addToCart: (product: any) => void;
     removeFromCart: (id: string) => void;
+    incrementItem: (id: string) => void;
+    decrementItem: (id: string) => void;
     toggleCart: () => void;
     clearCart: () => void;
     total: number;
@@ -63,11 +65,23 @@ export function CartProvider({ children }: { children: ReactNode }) {
                 quantity: 1
             }];
         });
-        setIsOpen(true); // Open cart when adding
+        setIsOpen(true);
     };
 
     const removeFromCart = (id: string) => {
         setItems((prev) => prev.filter((item) => item.id !== id));
+    };
+
+    const incrementItem = (id: string) => {
+        setItems((prev) => prev.map((item) =>
+            item.id === id ? { ...item, quantity: item.quantity + 1 } : item
+        ));
+    };
+
+    const decrementItem = (id: string) => {
+        setItems((prev) => prev.map((item) =>
+            item.id === id ? { ...item, quantity: Math.max(1, item.quantity - 1) } : item
+        ));
     };
 
     const toggleCart = () => setIsOpen((prev) => !prev);
@@ -77,7 +91,7 @@ export function CartProvider({ children }: { children: ReactNode }) {
     const total = items.reduce((acc, item) => acc + item.price * item.quantity, 0);
 
     return (
-        <CartContext.Provider value={{ items, isOpen, addToCart, removeFromCart, toggleCart, clearCart, total }}>
+        <CartContext.Provider value={{ items, isOpen, addToCart, removeFromCart, incrementItem, decrementItem, toggleCart, clearCart, total }}>
             {children}
         </CartContext.Provider>
     );

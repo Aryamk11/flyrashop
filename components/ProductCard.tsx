@@ -13,6 +13,7 @@ export default function ProductCard({ product }: { product: any }) {
           alt={product.title}
           fill
           className="object-cover opacity-90 transition group-hover:opacity-100 group-hover:scale-105"
+          unoptimized={product.image_url?.startsWith('blob:')}
         />
       </Link>
       <div className="p-4 text-right">
