@@ -1,11 +1,16 @@
+'use client';
+
 import Link from 'next/link';
-import { Search, Menu } from 'lucide-react';
+import { Search, Menu, ShoppingBag } from 'lucide-react';
+import { useCart } from '@/components/Cart/CartContext';
 
 export default function Header() {
+  const { toggleCart, items } = useCart();
+
   return (
     <header className="sticky top-0 z-50 w-full border-b border-neon-pink/20 bg-black/80 backdrop-blur-md">
       <div className="container mx-auto flex h-16 items-center justify-between px-4">
-        
+
         {/* RIGHT SECTION: Nav Links + Search */}
         <div className="flex items-center gap-8">
           <nav className="hidden md:flex items-center gap-8 text-sm font-medium text-gray-400">
@@ -14,10 +19,19 @@ export default function Header() {
             <Link href="#" className="hover:text-neon-pink transition-colors">اکسسوری</Link>
           </nav>
 
-          <div className="flex items-center border-gray-800 md:border-r md:pr-6">
+          <div className="flex items-center border-gray-800 md:border-r md:pr-6 gap-4">
             <button className="text-gray-400 hover:text-white transition-colors flex items-center gap-2">
               <Search className="h-5 w-5" />
               <span className="hidden lg:inline text-xs text-gray-600">جستجو...</span>
+            </button>
+
+            <button onClick={toggleCart} className="text-gray-400 hover:text-neon-pink transition-colors relative">
+              <ShoppingBag className="h-5 w-5" />
+              {items.length > 0 && (
+                <span className="absolute -top-2 -right-2 h-4 w-4 bg-neon-pink text-[10px] text-white flex items-center justify-center rounded-full font-bold animate-bounce">
+                  {items.length}
+                </span>
+              )}
             </button>
           </div>
         </div>
