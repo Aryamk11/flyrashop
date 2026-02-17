@@ -12,10 +12,12 @@ export const revalidate = 60; // Revalidate every minute
 
 export async function generateStaticParams() {
   const { data: products } = await supabase.from('products').select('slug');
-  return products?.map(({ slug }) => ({ slug })) || [];
+  return products
+    ?.filter((p) => p.slug)
+    .map(({ slug }) => ({ slug: String(slug) })) || [];
 }
 
-export default async function ProductPage({ params }: { params: { slug: string } }) {
+export default async function ProductPage({ params }: { params: Promise<{ slug: string }> }) {
   const { slug } = await params;
   const { data: product } = await supabase
     .from('products')
