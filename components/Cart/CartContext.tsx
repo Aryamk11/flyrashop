@@ -17,6 +17,7 @@ interface CartContextType {
     removeFromCart: (id: string) => void;
     incrementItem: (id: string) => void;
     decrementItem: (id: string) => void;
+    syncCart: (items: CartItem[]) => void;
     toggleCart: () => void;
     clearCart: () => void;
     total: number;
@@ -65,7 +66,7 @@ export function CartProvider({ children }: { children: ReactNode }) {
                 quantity: 1
             }];
         });
-        setIsOpen(true);
+        // setIsOpen(true); // User requested to disable auto-open
     };
 
     const removeFromCart = (id: string) => {
@@ -84,6 +85,10 @@ export function CartProvider({ children }: { children: ReactNode }) {
         ));
     };
 
+    const syncCart = (newItems: CartItem[]) => {
+        setItems(newItems);
+    };
+
     const toggleCart = () => setIsOpen((prev) => !prev);
 
     const clearCart = () => setItems([]);
@@ -91,7 +96,7 @@ export function CartProvider({ children }: { children: ReactNode }) {
     const total = items.reduce((acc, item) => acc + item.price * item.quantity, 0);
 
     return (
-        <CartContext.Provider value={{ items, isOpen, addToCart, removeFromCart, incrementItem, decrementItem, toggleCart, clearCart, total }}>
+        <CartContext.Provider value={{ items, isOpen, addToCart, removeFromCart, incrementItem, decrementItem, syncCart, toggleCart, clearCart, total }}>
             {children}
         </CartContext.Provider>
     );

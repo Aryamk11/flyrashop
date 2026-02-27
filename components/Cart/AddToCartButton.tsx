@@ -2,7 +2,6 @@
 
 import { useCart } from '@/components/Cart/CartContext';
 import { ShoppingBag } from 'lucide-react';
-import { useState } from 'react';
 
 interface AddToCartButtonProps {
     product: {
@@ -14,25 +13,43 @@ interface AddToCartButtonProps {
 }
 
 export default function AddToCartButton({ product }: AddToCartButtonProps) {
-    const { addToCart } = useCart();
-    const [added, setAdded] = useState(false);
+    const { addToCart, items, incrementItem, decrementItem } = useCart();
+
+    // Find current quantity of this product in cart
+    const cartItem = items.find(item => item.id === product.id);
+    const quantity = cartItem ? cartItem.quantity : 0;
 
     const handleAdd = () => {
         addToCart(product);
-        setAdded(true);
-        setTimeout(() => setAdded(false), 2000); // Reset animation
     };
 
     return (
-        <button
-            onClick={handleAdd}
-            className={`w-full font-bold py-4 rounded-xl transition-all transform active:scale-95 flex items-center justify-center gap-3 text-lg group shadow-[0_0_20px_rgba(255,255,255,0.1)] hover:shadow-[0_0_25px_rgba(255,20,147,0.4)] ${added
-                    ? 'bg-green-500 text-white hover:bg-green-600'
-                    : 'bg-white text-black hover:bg-neon-pink hover:text-white'
-                }`}
-        >
-            <ShoppingBag className={`h-6 w-6 ${added ? 'animate-bounce' : ''}`} />
-            {added ? 'به سبد اضافه شد' : 'افزودن به سبد خرید'}
-        </button>
+        <div className="flex items-center gap-2 w-full">
+            {quantity === 0 ? (
+                <button
+                    onClick={handleAdd}
+                    className="w-full font-bold py-4 rounded-xl transition-all transform active:scale-95 flex items-center justify-center gap-3 text-lg group shadow-[0_0_20px_rgba(255,255,255,0.1)] hover:shadow-[0_0_25px_rgba(255,20,147,0.4)] bg-white text-black hover:bg-neon-pink hover:text-white"
+                >
+                    <ShoppingBag className="h-6 w-6" />
+                    <span>افزودن به سبد خرید</span>
+                </button>
+            ) : (
+                <div className="flex items-center justify-between w-full bg-black border border-neon-pink rounded-xl text-white overflow-hidden h-14">
+                    <button
+                        onClick={() => incrementItem(product.id)}
+                        className="h-full px-6 hover:bg-neon-pink/20 transition-colors text-2xl font-bold flex items-center justify-center"
+                    >
+                        +
+                    </button>
+                    <span className="font-mono text-xl font-bold">{quantity}</span>
+                    <button
+                        onClick={() => decrementItem(product.id)}
+                        className="h-full px-6 hover:bg-neon-pink/20 transition-colors text-2xl font-bold flex items-center justify-center"
+                    >
+                        -
+                    </button>
+                </div>
+            )}
+        </div>
     );
 }

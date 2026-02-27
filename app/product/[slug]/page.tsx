@@ -88,15 +88,7 @@ export default async function ProductPage({ params }: { params: Promise<{ slug: 
               </div>
 
               {/* Additional Info / Specs (Static for now) */}
-              <div className="bg-gray-900/30 rounded-xl p-6 border border-gray-800/50">
-                <h3 className="text-sm font-bold text-gray-300 mb-4 uppercase tracking-wider">مشخصات</h3>
-                <div className="grid grid-cols-2 gap-4 text-sm">
-                  <div className="text-gray-500">جنس:</div>
-                  <div className="text-white">کتان ممتاز</div>
-                  <div className="text-gray-500">سایز:</div>
-                  <div className="text-white">Free Size</div>
-                </div>
-              </div>
+
             </div>
           </div>
         </div>

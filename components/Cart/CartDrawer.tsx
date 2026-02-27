@@ -1,6 +1,7 @@
 'use client';
 
 import { useCart } from '@/components/Cart/CartContext';
+import { useState } from 'react';
 import { X, Trash2, ShoppingBag } from 'lucide-react';
 import Image from 'next/image';
 import Link from 'next/link';
@@ -8,6 +9,7 @@ import Link from 'next/link';
 export default function CartDrawer() {
     const { items, isOpen, toggleCart, removeFromCart, total } = useCart();
     const formattedTotal = new Intl.NumberFormat('fa-IR').format(total);
+    const [confirmDeleteId, setConfirmDeleteId] = useState<string | null>(null);
 
     if (!isOpen) return null;
 
@@ -65,10 +67,34 @@ export default function CartDrawer() {
                                     <div className="flex items-center justify-between mt-2">
                                         <span className="text-xs text-gray-400">تعداد: {item.quantity}</span>
                                         <button
-                                            onClick={() => removeFromCart(item.id)}
-                                            className="text-red-500 hover:text-red-400 transition-colors"
+                                            onClick={() => {
+                                                if (confirmDeleteId === item.id) {
+                                                    removeFromCart(item.id);
+                                                    setConfirmDeleteId(null);
+                                                } else {
+                                                    setConfirmDeleteId(item.id);
+                                                    // Auto-reset after 3 seconds
+                                                    setTimeout(() => setConfirmDeleteId(null), 3000);
+                                                }
+                                            }}
+                                            className={`${confirmDeleteId === item.id ? 'text-neon-pink bg-neon-pink/10 px-2 py-0.5 rounded' : 'text-red-500 hover:text-red-400'} transition-all text-xs flex items-center gap-1`}
                                         >
-                                            <Trash2 className="h-4 w-4" />
+                                            {confirmDeleteId === item.id ? (
+                                                <div className="flex gap-1">
+                                                    <span>مطمئنی؟</span>
+                                                    <span
+                                                        className="text-white hover:underline cursor-pointer px-1"
+                                                        onClick={(e) => {
+                                                            e.stopPropagation();
+                                                            setConfirmDeleteId(null);
+                                                        }}
+                                                    >
+                                                        خیر
+                                                    </span>
+                                                </div>
+                                            ) : (
+                                                <Trash2 className="h-4 w-4" />
+                                            )}
                                         </button>
                                     </div>
                                 </div>
@@ -83,12 +109,13 @@ export default function CartDrawer() {
                             <span className="text-gray-400">مجموع قابل پرداخت:</span>
                             <span className="text-xl font-bold text-white dir-ltr font-mono">{formattedTotal} تومان</span>
                         </div>
+
                         <Link
-                            href={generateWhatsAppLink()}
-                            target="_blank"
-                            className="block w-full bg-neon-pink text-white text-center font-bold py-3 rounded-lg hover:bg-neon-pink/90 transition-all shadow-[0_0_15px_rgba(255,20,147,0.4)] hover:shadow-[0_0_25px_rgba(255,20,147,0.6)]"
+                            href="/cart/edit"
+                            onClick={toggleCart}
+                            className="block w-full mt-3 bg-neon-pink text-black text-center font-bold py-3 rounded-lg hover:bg-white transition-all shadow-[0_0_15px_rgba(255,20,147,0.4)]"
                         >
-                            تکمیل سفارش در واتس‌اپ
+                            ویرایش یا نهایی کردن خرید
                         </Link>
                     </div>
                 )}

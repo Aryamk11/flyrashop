@@ -11,20 +11,14 @@ export async function addProduct(prevState: any, formData: FormData) {
   const rawPrice = formData.get('price');
   const rawImage = formData.get('image');
 
-  console.log('Incoming Data:', {
-    title: rawTitle,
-    price: rawPrice,
-    description: rawDescription ? 'Present' : 'Missing',
-    image: rawImage ? 'Present' : 'Missing'
-  });
-
   const title = (rawTitle as string)?.trim();
   const description = (rawDescription as string)?.trim();
   const priceStr = (rawPrice as string)?.trim();
   const image = rawImage as File;
 
-  if (!title || title.length === 0) return { error: 'عنوان محصول الزامی است.' };
-  if (!priceStr || priceStr.length === 0) return { error: 'قیمت محصول الزامی است.' };
+  // Validations
+  if (!title) return { error: 'عنوان محصول الزامی است.' };
+  if (!priceStr) return { error: 'قیمت محصول الزامی است.' };
   if (!image || image.size === 0) return { error: 'تصویر محصول الزامی است.' };
 
   const price = parseFloat(priceStr);
@@ -32,10 +26,10 @@ export async function addProduct(prevState: any, formData: FormData) {
 
   const supabase = getServiceSupabase();
 
+  // 1. Upload Image
   const fileExt = image.name.split('.').pop();
   const filename = `${Date.now()}-${Math.random().toString(36).substring(7)}.${fileExt}`;
 
-  // Upload Image
   const { error: uploadError } = await supabase.storage.from('products').upload(filename, image);
   if (uploadError) {
     console.error('Upload Error:', uploadError);
@@ -44,10 +38,24 @@ export async function addProduct(prevState: any, formData: FormData) {
 
   const { data: { publicUrl } } = supabase.storage.from('products').getPublicUrl(filename);
 
-  // Generate Slug
-  const slug = title.replace(/\s+/g, '-');
+  // 2. Generate Unique Slug
+  // Replace spaces with dashes and remove special characters that break URLs
+  let slug = title.replace(/\s+/g, '-').replace(/[^\u0600-\u06FFa-zA-Z0-9-]/g, '');
 
-  // Insert to DB
+  // Check for existing slug to prevent "duplicate key" error
+  const { data: existingProduct } = await supabase
+    .from('products')
+    .select('id')
+    .eq('slug', slug)
+    .single();
+
+  if (existingProduct) {
+    // Append a short random string if the slug exists
+    const shortId = Math.random().toString(36).substring(7);
+    slug = `${slug}-${shortId}`;
+  }
+
+  // 3. Insert to DB
   console.log('Inserting into DB:', { title, slug, price, image_url: publicUrl });
 
   const { error: dbError } = await supabase.from('products').insert({
@@ -66,4 +74,68 @@ export async function addProduct(prevState: any, formData: FormData) {
   console.log('Product added successfully');
   revalidatePath('/');
   redirect('/');
+}
+
+export async function updateProduct(prevState: any, formData: FormData) {
+  const id = formData.get('id') as string;
+  const rawTitle = formData.get('title');
+  const rawDescription = formData.get('description');
+  const rawPrice = formData.get('price');
+  const rawImage = formData.get('image');
+
+  // Validations
+  if (!id) return { error: 'شناسه محصول نامعتبر است.' };
+  if (!rawTitle) return { error: 'عنوان محصول الزامی است.' };
+  if (!rawPrice) return { error: 'قیمت محصول الزامی است.' };
+
+  const title = (rawTitle as string)?.trim();
+  const description = (rawDescription as string)?.trim();
+  const priceStr = (rawPrice as string)?.trim();
+  const image = rawImage as File;
+
+  const price = parseFloat(priceStr);
+  if (isNaN(price)) return { error: 'قیمت وارد شده معتبر نیست.' };
+
+  const supabase = getServiceSupabase();
+  let publicUrl = null;
+
+  // 1. Upload New Image if provided
+  if (image && image.size > 0) {
+    const fileExt = image.name.split('.').pop();
+    const filename = `${Date.now()}-${Math.random().toString(36).substring(7)}.${fileExt}`;
+
+    const { error: uploadError } = await supabase.storage.from('products').upload(filename, image);
+    if (uploadError) {
+      console.error('Upload Error:', uploadError);
+      return { error: 'آپلود تصویر جدید با خطا مواجه شد.' };
+    }
+
+    const { data } = supabase.storage.from('products').getPublicUrl(filename);
+    publicUrl = data.publicUrl;
+  }
+
+  // 2. Update DB
+  const updateData: any = {
+    title,
+    description,
+    price
+  };
+
+  if (publicUrl) {
+    updateData.image_url = publicUrl;
+  }
+
+  const { error: dbError } = await supabase
+    .from('products')
+    .update(updateData)
+    .eq('id', id);
+
+  if (dbError) {
+    console.error('Database Update Error:', dbError);
+    return { error: 'خطا در بروزرسانی محصول: ' + dbError.message };
+  }
+
+  revalidatePath('/');
+  revalidatePath('/admin/products');
+  redirect('/admin/products');
 }
