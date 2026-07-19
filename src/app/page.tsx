@@ -33,7 +33,7 @@ export default async function Home() {
           </div>
         </section>
 
-        {/* Product Grid */}
+        {/* Product Grid */} 
         <section className="container mx-auto px-4 py-16">
             <div className="mb-10 flex items-end justify-between border-b border-gray-800 pb-4">
                 <h3 className="text-2xl font-bold text-white">آخرین دراپ‌ها</h3>
