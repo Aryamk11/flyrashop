@@ -5,11 +5,13 @@ import { Search, Menu, ShoppingBag, Sun, Moon } from 'lucide-react';
 import { useCart } from '@/components/Cart/CartContext';
 import { useTheme } from 'next-themes';
 import { useEffect, useState } from 'react';
+import SearchModal from '@/components/SearchModal';
 
 export default function Header() {
   const { toggleCart, items } = useCart();
   const { theme, setTheme } = useTheme();
   const [mounted, setMounted] = useState(false);
+  const [isSearchOpen, setIsSearchOpen] = useState(false);
 
   useEffect(() => {
     setMounted(true);
@@ -22,13 +24,13 @@ export default function Header() {
         {/* RIGHT SECTION: Nav Links + Search */}
         <div className="flex items-center gap-8">
           <nav className="hidden md:flex items-center gap-8 text-sm font-medium text-gray-600 dark:text-gray-400">
-            <Link href="#" className="hover:text-neon-pink hover:glow-pink-text transition-all">مجموعه‌ها</Link>
-            <Link href="#" className="hover:text-neon-pink hover:glow-pink-text transition-all">جدیدترین‌ها</Link>
-            <Link href="#" className="hover:text-neon-pink hover:glow-pink-text transition-all">اکسسوری</Link>
+            <Link href="/shop" className="hover:text-neon-pink hover:glow-pink-text transition-all">مجموعه‌ها</Link>
+            <Link href="/shop" className="hover:text-neon-pink hover:glow-pink-text transition-all">جدیدترین‌ها</Link>
+            <Link href="/shop" className="hover:text-neon-pink hover:glow-pink-text transition-all">فروشگاه</Link>
           </nav>
 
           <div className="flex items-center border-gray-200 dark:border-gray-800 md:border-r md:pr-6 gap-4">
-            <button className="text-gray-400 hover:text-gray-900 dark:hover:text-white transition-colors flex items-center gap-2">
+            <button onClick={() => setIsSearchOpen(true)} className="text-gray-400 hover:text-gray-900 dark:hover:text-white transition-colors flex items-center gap-2">
               <Search className="h-5 w-5" />
               <span className="hidden lg:inline text-xs text-gray-500 dark:text-gray-600">جستجو...</span>
             </button>
@@ -73,6 +75,8 @@ export default function Header() {
         </div>
 
       </div>
+
+      <SearchModal isOpen={isSearchOpen} onClose={() => setIsSearchOpen(false)} />
     </header>
   );
 }
