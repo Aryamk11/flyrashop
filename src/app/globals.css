@@ -1,33 +1,73 @@
 @import "tailwindcss";
+@custom-variant dark (&:where(.dark, .dark *));
 
 @theme {
   --color-neon-pink: #ff007f;
-  --color-neon-gray: #1a1a1a;
+  --color-neon-black: #050505;
+  --color-neon-gray: #121212;
   
   --animate-pulse-fast: pulse 1s cubic-bezier(0.4, 0, 0.6, 1) infinite;
 }
 
 :root {
+  --foreground-rgb: 15, 15, 15;
+  --background-start-rgb: 250, 250, 250;
+  --background-end-rgb: 250, 250, 250;
+  --scrollbar-track: #f0f0f0;
+  --scrollbar-thumb: #cccccc;
+}
+
+.dark {
   --foreground-rgb: 255, 255, 255;
   --background-start-rgb: 5, 5, 5;
   --background-end-rgb: 5, 5, 5;
+  --scrollbar-track: var(--color-neon-black);
+  --scrollbar-thumb: var(--color-neon-gray);
 }
 
 body {
   color: rgb(var(--foreground-rgb));
-  background: #050505; /* Deep Black */
+  background: rgb(var(--background-start-rgb));
   font-family: Arial, Helvetica, sans-serif;
+  transition: background-color 0.3s ease, color 0.3s ease;
 }
 
-/* Utility for neon borders if needed explicitly */
-.border-neon-pink {
-  border-color: var(--color-neon-pink);
+/* Custom Scrollbar */
+::-webkit-scrollbar {
+  width: 8px;
 }
 
-.text-neon-pink {
-  color: var(--color-neon-pink);
+::-webkit-scrollbar-track {
+  background: var(--scrollbar-track);
 }
 
-.bg-neon-gray {
-  background-color: var(--color-neon-gray);
+::-webkit-scrollbar-thumb {
+  background: var(--scrollbar-thumb);
+  border-radius: 4px;
+}
+
+::-webkit-scrollbar-thumb:hover {
+  background: var(--color-neon-pink);
+}
+
+/* Cyberpunk Grid Background */
+.cyber-grid {
+  background-image: 
+    linear-gradient(to right, rgba(255, 0, 127, 0.05) 1px, transparent 1px),
+    linear-gradient(to bottom, rgba(255, 0, 127, 0.05) 1px, transparent 1px);
+  background-size: 30px 30px;
+}
+
+/* Glow Utilities */
+.glow-pink {
+  box-shadow: 0 0 15px var(--color-neon-pink);
+}
+
+.glow-pink-text {
+  text-shadow: 0 0 10px var(--color-neon-pink);
+}
+
+/* Sharp clipping for cyberpunk look */
+.cyber-cut {
+  clip-path: polygon(10px 0, 100% 0, 100% calc(100% - 10px), calc(100% - 10px) 100%, 0 100%, 0 10px);
 }
