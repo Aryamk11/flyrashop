@@ -1,6 +1,7 @@
 'use client';
 
 import { useCart } from '@/components/Cart/CartContext';
+import { useToast } from '@/components/ui/ToastContext';
 import { ShoppingBag } from 'lucide-react';
 
 interface AddToCartButtonProps {
@@ -14,6 +15,7 @@ interface AddToCartButtonProps {
 
 export default function AddToCartButton({ product }: AddToCartButtonProps) {
     const { addToCart, items, incrementItem, decrementItem } = useCart();
+    const { addToast } = useToast();
 
     // Find current quantity of this product in cart
     const cartItem = items.find(item => item.id === product.id);
@@ -21,6 +23,7 @@ export default function AddToCartButton({ product }: AddToCartButtonProps) {
 
     const handleAdd = () => {
         addToCart(product);
+        addToast('محصول به سبد خرید اضافه شد', 'success');
     };
 
     return (
