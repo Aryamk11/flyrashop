@@ -95,11 +95,16 @@ export default function CartEditPage() {
         router.back();
     };
 
+    const handleCheckout = () => {
+        handleSave();
+        router.push('/checkout');
+    };
+
     return (
-        <div className="min-h-screen bg-black text-white p-4 md:p-8" dir="rtl">
+        <div className="min-h-screen bg-gray-50 dark:bg-black text-gray-900 dark:text-white p-4 md:p-8 transition-colors duration-300" dir="rtl">
             <div className="max-w-6xl mx-auto">
-                <div className="flex items-center gap-4 mb-8 border-b border-gray-800 pb-4">
-                    <button onClick={handleCancel} className="text-gray-400 hover:text-white transition-colors">
+                <div className="flex items-center gap-4 mb-8 border-b border-gray-300 dark:border-gray-800 pb-4 transition-colors duration-300">
+                    <button onClick={handleCancel} className="text-gray-500 dark:text-gray-400 hover:text-gray-900 dark:hover:text-white transition-colors">
                         <ArrowRight size={24} />
                     </button>
                     <h1 className="text-3xl font-bold text-neon-pink font-[family-name:var(--font-eb-garamond)]">
@@ -109,12 +114,12 @@ export default function CartEditPage() {
 
                 {/* Actions Bar - Diff Dependent */}
                 {diff !== 0 && (
-                    <div className="flex items-center gap-3 mb-8 animate-in slide-in-from-top-4 fade-in duration-300 sticky top-4 z-50 bg-black/80 backdrop-blur-md p-4 rounded-xl border border-neon-pink/30 shadow-[0_0_20px_rgba(255,20,147,0.1)]">
-                        <button onClick={handleSave} className="flex-1 bg-neon-pink text-black font-bold py-3 rounded-xl hover:bg-white transition-all shadow-[0_0_15px_rgba(255,20,147,0.4)] flex items-center justify-center gap-2">
+                    <div className="flex items-center gap-3 mb-8 animate-in slide-in-from-top-4 fade-in duration-300 sticky top-4 z-50 bg-white/80 dark:bg-black/80 backdrop-blur-md p-4 rounded-xl border border-neon-pink/30 shadow-[0_0_20px_rgba(255,20,147,0.1)] transition-colors duration-300">
+                        <button onClick={handleSave} className="flex-1 bg-neon-pink text-black font-bold py-3 rounded-xl hover:bg-neon-pink/80 dark:hover:bg-white transition-all shadow-[0_0_15px_rgba(255,20,147,0.4)] flex items-center justify-center gap-2">
                             <Save size={20} />
                             ذخیره تغییرات
                         </button>
-                        <button onClick={handleCancel} className="flex-1 border border-gray-700 text-gray-400 font-bold py-3 rounded-xl hover:text-white hover:border-gray-500 transition-all">
+                        <button onClick={handleCancel} className="flex-1 border border-gray-300 dark:border-gray-700 text-gray-600 dark:text-gray-400 font-bold py-3 rounded-xl hover:text-gray-900 dark:hover:text-white hover:border-gray-400 dark:hover:border-gray-500 transition-all">
                             انصراف
                         </button>
                     </div>
@@ -126,8 +131,8 @@ export default function CartEditPage() {
                     {/* Items Column */}
                     <div className="lg:col-span-2 space-y-4">
                         {localItems.map(item => {
-                            let rowClass = "border border-gray-800 bg-gray-900/50";
-                            let statusColor = "text-white";
+                            let rowClass = "border border-gray-200 dark:border-gray-800 bg-white dark:bg-gray-900/50";
+                            let statusColor = "text-gray-900 dark:text-white";
 
                             // Determine Row Styling based on current state vs original
                             // Check exact changes to apply logic strictly as requested:
@@ -139,14 +144,14 @@ export default function CartEditPage() {
                             const isDeleted = item.status === 'deleted';
 
                             if (isAdded) {
-                                rowClass = "border-green-500/50 bg-green-950/20";
-                                statusColor = "text-green-400";
+                                rowClass = "border-green-500/50 bg-green-50 dark:bg-green-950/20";
+                                statusColor = "text-green-600 dark:text-green-400";
                             } else if (isReduced) {
-                                rowClass = "border-yellow-500/50 bg-yellow-950/20";
-                                statusColor = "text-yellow-400";
+                                rowClass = "border-yellow-500/50 bg-yellow-50 dark:bg-yellow-950/20";
+                                statusColor = "text-yellow-600 dark:text-yellow-400";
                             } else if (isDeleted) {
-                                rowClass = "border-red-500/50 bg-red-950/20 relative overflow-hidden";
-                                statusColor = "text-red-400";
+                                rowClass = "border-red-500/50 bg-red-50 dark:bg-red-950/20 relative overflow-hidden";
+                                statusColor = "text-red-600 dark:text-red-400";
                             }
 
                             return (
@@ -158,30 +163,30 @@ export default function CartEditPage() {
                                         </div>
                                     )}
 
-                                    <div className="relative w-24 h-24 bg-gray-800 rounded-lg overflow-hidden flex-shrink-0">
+                                    <div className="relative w-24 h-24 bg-gray-200 dark:bg-gray-800 rounded-lg overflow-hidden flex-shrink-0">
                                         <Image src={item.image_url} alt={item.title} fill className="object-cover" />
                                     </div>
 
                                     <div className="flex-1 z-10">
                                         <h3 className={`font-bold text-lg ${statusColor}`}>{item.title}</h3>
-                                        <div className="text-gray-400 font-mono text-sm mt-1">
+                                        <div className="text-gray-600 dark:text-gray-400 font-mono text-sm mt-1">
                                             {new Intl.NumberFormat('fa-IR').format(item.price)} تومان
                                         </div>
 
                                         <div className="flex items-center gap-2 mt-2 text-xs">
-                                            {isAdded && <span className="text-green-500 flex items-center gap-1"><Plus size={12} /> افزوده شده</span>}
-                                            {isReduced && <span className="text-yellow-500 flex items-center gap-1"><Minus size={12} /> کاهش یافته</span>}
-                                            {isDeleted && <span className="text-red-500 flex items-center gap-1"><Trash2 size={12} /> حذف شده</span>}
+                                            {isAdded && <span className="text-green-600 dark:text-green-500 flex items-center gap-1"><Plus size={12} /> افزوده شده</span>}
+                                            {isReduced && <span className="text-yellow-600 dark:text-yellow-500 flex items-center gap-1"><Minus size={12} /> کاهش یافته</span>}
+                                            {isDeleted && <span className="text-red-600 dark:text-red-500 flex items-center gap-1"><Trash2 size={12} /> حذف شده</span>}
                                         </div>
                                     </div>
 
                                     <div className="flex flex-col items-center gap-3 z-10">
                                         {!isDeleted ? (
                                             <>
-                                                <div className="flex items-center bg-black rounded-lg border border-gray-700">
-                                                    <button onClick={() => handleIncrement(item.id)} className="p-2 hover:text-green-400 transition-colors"><Plus size={16} /></button>
-                                                    <span className="w-8 text-center font-bold font-mono">{item.quantity}</span>
-                                                    <button onClick={() => handleDecrement(item.id)} className="p-2 hover:text-yellow-400 transition-colors"><Minus size={16} /></button>
+                                                <div className="flex items-center bg-gray-100 dark:bg-black rounded-lg border border-gray-300 dark:border-gray-700">
+                                                    <button onClick={() => handleIncrement(item.id)} className="p-2 hover:text-green-600 dark:hover:text-green-400 transition-colors"><Plus size={16} /></button>
+                                                    <span className="w-8 text-center font-bold font-mono text-gray-900 dark:text-white">{item.quantity}</span>
+                                                    <button onClick={() => handleDecrement(item.id)} className="p-2 hover:text-yellow-600 dark:hover:text-yellow-400 transition-colors"><Minus size={16} /></button>
                                                 </div>
                                                 <button onClick={() => handleDelete(item.id)} className="text-red-500 p-2 hover:bg-red-500/10 rounded transition-colors">
                                                     <Trash2 size={20} />
@@ -199,7 +204,7 @@ export default function CartEditPage() {
                         })}
 
                         {localItems.length === 0 && (
-                            <div className="text-center py-12 text-gray-500 border border-dashed border-gray-800 rounded-xl">
+                            <div className="text-center py-12 text-gray-500 dark:text-gray-400 border border-dashed border-gray-300 dark:border-gray-800 rounded-xl">
                                 سبد خرید شما خالی است.
                             </div>
                         )}
@@ -207,31 +212,37 @@ export default function CartEditPage() {
 
                     {/* Summary Column */}
                     <div className="lg:col-span-1">
-                        <div className="bg-gray-900 border border-gray-800 rounded-xl p-6 sticky top-8">
-                            <h2 className="text-xl font-bold mb-6 text-white border-b border-gray-800 pb-2">خلاصه تغییرات</h2>
+                        <div className="bg-white dark:bg-gray-900 border border-gray-200 dark:border-gray-800 rounded-xl p-6 sticky top-8 transition-colors duration-300">
+                            <h2 className="text-xl font-bold mb-6 text-gray-900 dark:text-white border-b border-gray-200 dark:border-gray-800 pb-2 transition-colors duration-300">خلاصه تغییرات</h2>
 
                             <div className="space-y-4 mb-8">
-                                <div className="flex justify-between items-center text-gray-400">
+                                <div className="flex justify-between items-center text-gray-600 dark:text-gray-400">
                                     <span>مبلغ قبلی:</span>
                                     <span className="font-mono">{new Intl.NumberFormat('fa-IR').format(oldTotal)}</span>
                                 </div>
 
                                 {diff !== 0 && (
-                                    <div className="flex justify-between items-center bg-black/50 p-3 rounded-lg">
+                                    <div className="flex justify-between items-center bg-gray-50 dark:bg-black/50 p-3 rounded-lg transition-colors duration-300">
                                         <span>تغییرات:</span>
-                                        <span className={`font-mono font-bold ${diff > 0 ? 'text-green-500' : 'text-red-500'}`} dir="ltr">
+                                        <span className={`font-mono font-bold ${diff > 0 ? 'text-green-600 dark:text-green-500' : 'text-red-600 dark:text-red-500'}`} dir="ltr">
                                             {diff > 0 ? '+' : ''}{new Intl.NumberFormat('fa-IR').format(diff)}
                                         </span>
                                     </div>
                                 )}
 
-                                <div className="flex justify-between items-center text-xl font-bold text-white pt-4 border-t border-gray-800">
+                                <div className="flex justify-between items-center text-xl font-bold text-gray-900 dark:text-white pt-4 border-t border-gray-200 dark:border-gray-800 transition-colors duration-300">
                                     <span>مبلغ نهایی:</span>
                                     <span className="font-mono text-neon-pink">{new Intl.NumberFormat('fa-IR').format(newTotal)} تومان</span>
                                 </div>
                             </div>
 
-
+                            <button 
+                                onClick={handleCheckout} 
+                                disabled={localItems.filter(item => item.status !== 'deleted').length === 0}
+                                className="w-full bg-neon-pink text-black font-bold py-4 rounded-xl hover:bg-neon-pink/80 dark:hover:bg-white transition-all shadow-[0_0_15px_rgba(255,20,147,0.4)] disabled:opacity-50 disabled:cursor-not-allowed disabled:shadow-none"
+                            >
+                                {diff !== 0 ? 'ذخیره و ثبت سفارش' : 'تکمیل سفارش'}
+                            </button>
                         </div>
                     </div>
                 </div>
