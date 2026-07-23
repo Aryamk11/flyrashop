@@ -33,7 +33,7 @@ export default function Dashboard() {
   };
 
   return (
-    <div className="min-h-screen p-8 bg-black text-right" dir="rtl">
+    <div className="min-h-screen p-8 bg-white dark:bg-black text-gray-900 dark:text-white transition-colors duration-300 text-right" dir="rtl">
       <div className="max-w-6xl mx-auto grid grid-cols-1 lg:grid-cols-2 gap-12">
 
         {/* Form Section */}
@@ -50,48 +50,48 @@ export default function Dashboard() {
             )}
 
             <div>
-              <label className="block text-gray-400 mb-2 text-sm font-bold">عنوان محصول</label>
+              <label className="block text-gray-600 dark:text-gray-400 mb-2 text-sm font-bold">عنوان محصول</label>
               <input
                 name="title"
                 required
-                className="w-full rounded bg-neon-gray border border-gray-700 p-3 text-white focus:border-neon-pink outline-none transition-colors"
+                className="w-full rounded bg-gray-50 dark:bg-neon-gray border border-gray-300 dark:border-gray-700 p-3 text-gray-900 dark:text-white focus:border-neon-pink outline-none transition-colors"
                 placeholder="مثال: کت چرم سایبرپانک"
                 onChange={handleInputChange}
               />
             </div>
 
             <div>
-              <label className="block text-gray-400 mb-2 text-sm font-bold">توضیحات تکمیلی</label>
+              <label className="block text-gray-600 dark:text-gray-400 mb-2 text-sm font-bold">توضیحات تکمیلی</label>
               <textarea
                 name="description"
                 rows={4}
-                className="w-full rounded bg-neon-gray border border-gray-700 p-3 text-white focus:border-neon-pink outline-none transition-colors"
+                className="w-full rounded bg-gray-50 dark:bg-neon-gray border border-gray-300 dark:border-gray-700 p-3 text-gray-900 dark:text-white focus:border-neon-pink outline-none transition-colors"
                 placeholder="جنس پارچه، سایز، نحوه شستشو و..."
                 onChange={handleInputChange}
               />
             </div>
 
             <div>
-              <label className="block text-gray-400 mb-2 text-sm font-bold">قیمت (تومان)</label>
+              <label className="block text-gray-600 dark:text-gray-400 mb-2 text-sm font-bold">قیمت (تومان)</label>
               <input
                 name="price"
                 type="number"
                 required
-                className="w-full rounded bg-neon-gray border border-gray-700 p-3 text-white focus:border-neon-pink outline-none transition-colors"
+                className="w-full rounded bg-gray-50 dark:bg-neon-gray border border-gray-300 dark:border-gray-700 p-3 text-gray-900 dark:text-white focus:border-neon-pink outline-none transition-colors"
                 placeholder="مثال: 2500000"
                 onChange={handleInputChange}
               />
             </div>
 
             <div>
-              <label className="block text-gray-400 mb-2 text-sm font-bold">تصویر محصول</label>
+              <label className="block text-gray-600 dark:text-gray-400 mb-2 text-sm font-bold">تصویر محصول</label>
               <div className="relative">
                 <input
                   name="image"
                   type="file"
                   required
                   accept="image/*"
-                  className="w-full text-gray-400 file:ml-4 file:rounded file:bg-neon-pink file:px-4 file:py-2 file:font-bold file:text-black hover:file:bg-white cursor-pointer"
+                  className="w-full text-gray-600 dark:text-gray-400 file:ml-4 file:rounded file:bg-neon-pink file:px-4 file:py-2 file:font-bold file:text-black hover:file:bg-black dark:hover:file:bg-white transition-colors cursor-pointer"
                   onChange={handleImageChange}
                 />
               </div>
@@ -135,13 +135,13 @@ export default function Dashboard() {
                   description: previewData.description
                 }} />
 
-                <div className="mt-8 p-6 rounded-xl border border-dashed border-gray-700 bg-gray-900/50 text-gray-400 text-sm leading-relaxed">
-                  <h3 className="text-white font-bold mb-2">توضیحات:</h3>
+                <div className="mt-8 p-6 rounded-xl border border-dashed border-gray-300 dark:border-gray-700 bg-gray-50 dark:bg-gray-900/50 text-gray-600 dark:text-gray-400 text-sm leading-relaxed transition-colors duration-300">
+                  <h3 className="text-gray-900 dark:text-white font-bold mb-2">توضیحات:</h3>
                   <p>{previewData.description || 'توضیحات محصول در اینجا نمایش داده می‌شود...'}</p>
                 </div>
               </div>
             ) : (
-              <div className="flex aspect-square w-full flex-col items-center justify-center rounded-xl border-2 border-dashed border-gray-800 bg-gray-900/30 text-gray-600">
+              <div className="flex aspect-square w-full flex-col items-center justify-center rounded-xl border-2 border-dashed border-gray-300 dark:border-gray-800 bg-gray-50 dark:bg-gray-900/30 text-gray-500 dark:text-gray-600 transition-colors duration-300">
                 <Eye size={48} className="mb-4 opacity-50" />
                 <p>اطلاعات را وارد کنید تا پیش‌نمایش فعال شود</p>
               </div>

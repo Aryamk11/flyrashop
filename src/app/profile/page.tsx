@@ -28,7 +28,7 @@ export default function ProfilePage() {
 
     if (loading) {
         return (
-            <div className="flex h-screen w-full items-center justify-center bg-black text-white">
+            <div className="flex h-screen w-full items-center justify-center bg-gray-50 dark:bg-black text-gray-900 dark:text-white transition-colors duration-300">
                 <Loader2 className="h-8 w-8 animate-spin text-neon-pink" />
             </div>
         );
@@ -37,24 +37,24 @@ export default function ProfilePage() {
     if (!user) return null;
 
     return (
-        <div className="flex min-h-screen flex-col bg-black text-white">
+        <div className="flex min-h-screen flex-col bg-white dark:bg-black text-gray-900 dark:text-white transition-colors duration-300">
             <Header />
             <main className="flex-1 container mx-auto px-4 py-16">
-                <div className="max-w-2xl mx-auto bg-gray-900/40 border border-gray-800 rounded-2xl p-8">
+                <div className="max-w-2xl mx-auto bg-gray-50 dark:bg-gray-900/40 border border-gray-200 dark:border-gray-800 rounded-2xl p-8 transition-colors duration-300">
                     <h1 className="text-3xl font-bold mb-8">پروفایل کاربری</h1>
                     <div className="flex items-center gap-4 mb-8">
                         <div className="h-20 w-20 rounded-full bg-neon-pink/20 flex items-center justify-center text-neon-pink text-2xl font-bold">
                             User
                         </div>
                         <div>
-                            <p className="text-gray-400 text-sm">شماره موبایل</p>
-                            <p className="text-xl font-mono text-white dir-ltr text-right">{user.phone}</p>
+                            <p className="text-gray-500 dark:text-gray-400 text-sm">شماره موبایل</p>
+                            <p className="text-xl font-mono text-gray-900 dark:text-white dir-ltr text-right">{user.phone}</p>
                         </div>
                     </div>
 
-                    <div className="border-t border-gray-800 pt-8">
+                    <div className="border-t border-gray-200 dark:border-gray-800 pt-8 transition-colors duration-300">
                         <h2 className="text-xl font-bold mb-4">سفارش‌های من</h2>
-                        <p className="text-gray-500 text-sm">شما هنوز هیچ سفارشی ثبت نکرده‌اید.</p>
+                        <p className="text-gray-500 dark:text-gray-500 text-sm">شما هنوز هیچ سفارشی ثبت نکرده‌اید.</p>
                     </div>
                 </div>
             </main>

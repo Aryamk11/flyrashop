@@ -73,19 +73,19 @@ export default function LoginPage() {
     };
 
     return (
-        <main className="flex min-h-screen items-center justify-center bg-black p-4 relative overflow-hidden">
+        <main className="flex min-h-screen items-center justify-center bg-gray-50 dark:bg-black p-4 relative overflow-hidden transition-colors duration-300">
             {/* Background Effects */}
             <div className="absolute top-0 left-0 w-full h-full overflow-hidden pointer-events-none data-noselect">
                 <div className="absolute -top-[20%] -left-[10%] w-[50%] h-[50%] bg-neon-pink/10 rounded-full blur-[100px]" />
                 <div className="absolute top-[30%] -right-[10%] w-[40%] h-[40%] bg-purple-600/10 rounded-full blur-[100px]" />
             </div>
 
-            <div className="w-full max-w-md bg-gray-900/40 backdrop-blur-xl border border-gray-800 rounded-2xl p-8 shadow-2xl relative z-10">
+            <div className="w-full max-w-md bg-white/40 dark:bg-gray-900/40 backdrop-blur-xl border border-gray-200 dark:border-gray-800 rounded-2xl p-8 shadow-2xl relative z-10 transition-colors duration-300">
                 <div className="mb-8 text-center">
-                    <h1 className="text-3xl font-bold text-white mb-2 tracking-tight">
+                    <h1 className="text-3xl font-bold text-gray-900 dark:text-white mb-2 tracking-tight transition-colors">
                         FLYRA<span className="text-neon-pink">SHOP</span>
                     </h1>
-                    <p className="text-gray-400 text-sm">ورود به حساب کاربری</p>
+                    <p className="text-gray-600 dark:text-gray-400 text-sm">ورود به حساب کاربری</p>
                 </div>
 
                 {error && (
@@ -97,7 +97,7 @@ export default function LoginPage() {
                 {step === 'PHONE' ? (
                     <form onSubmit={handleSendOtp} className="space-y-6">
                         <div className="space-y-2">
-                            <label className="text-xs font-medium text-gray-400 uppercase tracking-wider">شماره موبایل</label>
+                            <label className="text-xs font-medium text-gray-600 dark:text-gray-400 uppercase tracking-wider">شماره موبایل</label>
                             <PhoneInput value={phone} onChange={setPhone} disabled={loading} />
                         </div>
 
@@ -120,7 +120,7 @@ export default function LoginPage() {
                     <form onSubmit={handleVerifyOtp} className="space-y-6">
                         <div className="space-y-2">
                             <div className="flex justify-between items-center">
-                                <label className="text-xs font-medium text-gray-400 uppercase tracking-wider">کد تایید</label>
+                                <label className="text-xs font-medium text-gray-600 dark:text-gray-400 uppercase tracking-wider">کد تایید</label>
                                 <button
                                     type="button"
                                     onClick={() => setStep('PHONE')}
@@ -150,7 +150,7 @@ export default function LoginPage() {
                 )}
 
                 <div className="mt-8 text-center">
-                    <Link href="/" className="text-xs text-gray-600 hover:text-white transition-colors">
+                    <Link href="/" className="text-xs text-gray-500 hover:text-gray-900 dark:text-gray-600 dark:hover:text-white transition-colors">
                         بازگشت به خانه
                     </Link>
                 </div>

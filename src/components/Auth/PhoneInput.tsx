@@ -28,7 +28,7 @@ export default function PhoneInput({ value, onChange, disabled }: PhoneInputProp
                 onChange={handleChange}
                 placeholder="شماره موبایل (مثلاً 09123456789)"
                 disabled={disabled}
-                className="w-full bg-black/50 border border-gray-800 rounded-lg py-3 pl-4 pr-10 text-white placeholder-gray-500 focus:outline-none focus:border-neon-pink focus:ring-1 focus:ring-neon-pink transition-all disabled:opacity-50 disabled:cursor-not-allowed dir-ltr text-left tracking-wider font-mono"
+                className="w-full bg-white dark:bg-black/50 border border-gray-300 dark:border-gray-800 rounded-lg py-3 pl-4 pr-10 text-gray-900 dark:text-white placeholder-gray-400 dark:placeholder-gray-500 focus:outline-none focus:border-neon-pink focus:ring-1 focus:ring-neon-pink transition-all disabled:opacity-50 disabled:cursor-not-allowed dir-ltr text-left tracking-wider font-mono"
             />
             <div className="absolute right-3 top-1/2 -translate-y-1/2 pointer-events-none">
                 <span className="text-gray-600 text-xs">IR (+98)</span>

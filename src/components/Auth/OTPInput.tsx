@@ -39,7 +39,7 @@ export default function OTPInput({ value, onChange, disabled }: OTPInputProps) {
                 onChange={handleChange}
                 placeholder="Code: - - - - - -"
                 disabled={disabled}
-                className="w-full bg-black/50 border border-gray-800 rounded-lg py-3 pl-4 pr-10 text-white placeholder-gray-500 focus:outline-none focus:border-neon-pink focus:ring-1 focus:ring-neon-pink transition-all disabled:opacity-50 disabled:cursor-not-allowed dir-ltr text-center tracking-[1em] font-mono text-lg"
+                className="w-full bg-white dark:bg-black/50 border border-gray-300 dark:border-gray-800 rounded-lg py-3 pl-4 pr-10 text-gray-900 dark:text-white placeholder-gray-400 dark:placeholder-gray-500 focus:outline-none focus:border-neon-pink focus:ring-1 focus:ring-neon-pink transition-all disabled:opacity-50 disabled:cursor-not-allowed dir-ltr text-center tracking-[1em] font-mono text-lg"
             />
         </div>
     );
