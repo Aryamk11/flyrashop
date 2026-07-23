@@ -7,6 +7,8 @@ import Footer from '@/components/Footer';
 import { ShoppingBag, ArrowRight } from 'lucide-react';
 import Link from 'next/link';
 import AddToCartButton from '@/components/Cart/AddToCartButton';
+import { dummyProducts } from '@/lib/dummyData';
+import ProductCard from '@/components/ProductCard';
 
 export const revalidate = 60; // Revalidate every minute
 
@@ -25,38 +27,48 @@ export default async function ProductPage({ params }: { params: Promise<{ slug: 
     .eq('slug', slug ? decodeURIComponent(slug) : null)
     .single();
 
-  if (!product) {
+  let productToDisplay = product;
+
+  // Fallback to dummy data
+  if (!productToDisplay) {
+    productToDisplay = dummyProducts.find(p => p.slug === decodeURIComponent(slug));
+  }
+
+  if (!productToDisplay) {
     notFound();
   }
 
-  const formattedPrice = new Intl.NumberFormat('fa-IR').format(product.price);
+  const formattedPrice = new Intl.NumberFormat('fa-IR').format(productToDisplay.price);
+
+  // Get 4 related products (excluding current one)
+  const relatedProducts = dummyProducts.filter(p => p.id !== productToDisplay.id).slice(0, 4);
 
   return (
-    <div className="flex min-h-screen flex-col bg-black text-white">
+    <div className="flex min-h-screen flex-col bg-white dark:bg-black text-gray-900 dark:text-white transition-colors duration-300">
       <Header />
 
       <main className="flex-1">
         <div className="container mx-auto px-4 py-8">
           {/* Breadcrumb */}
-          <div className="mb-8 flex items-center gap-2 text-sm text-gray-500">
+          <div className="mb-8 flex items-center gap-2 text-sm text-gray-600 dark:text-gray-500 transition-colors duration-300">
             <Link href="/" className="hover:text-neon-pink transition-colors">خانه</Link>
             <span>/</span>
-            <span className="text-white">{product.title}</span>
+            <span className="text-gray-900 dark:text-white transition-colors duration-300">{productToDisplay.title}</span>
           </div>
 
           <div className="grid grid-cols-1 lg:grid-cols-2 gap-12">
             {/* Image Section */}
-            <div className="relative aspect-square w-full overflow-hidden rounded-2xl border border-gray-800 bg-gray-900/50 group">
-              {product.image_url ? (
+            <div className="relative aspect-square w-full overflow-hidden rounded-2xl border border-gray-300 dark:border-gray-800 bg-gray-100 dark:bg-gray-900/50 group transition-colors duration-300">
+              {productToDisplay.image_url ? (
                 <Image
-                  src={product.image_url}
-                  alt={product.title}
+                  src={productToDisplay.image_url}
+                  alt={productToDisplay.title}
                   fill
                   className="object-cover transition-transform duration-700 group-hover:scale-105"
                   priority
                 />
               ) : (
-                <div className="flex h-full items-center justify-center text-gray-700">
+                <div className="flex h-full items-center justify-center text-gray-500 dark:text-gray-700">
                   No Image
                 </div>
               )}
@@ -69,18 +81,18 @@ export default async function ProductPage({ params }: { params: Promise<{ slug: 
             <div className="flex flex-col justify-center space-y-8">
               <div>
                 <h1 className="text-4xl md:text-5xl font-bold mb-4 tracking-tight leading-tight">
-                  {product.title}
+                  {productToDisplay.title}
                 </h1>
                 <p className="text-2xl font-mono text-neon-pink mb-6 dir-ltr text-right">
-                  {formattedPrice} <span className="text-sm text-gray-400">Toman</span>
+                  {formattedPrice} <span className="text-sm text-gray-500 dark:text-gray-400">Toman</span>
                 </p>
-                <p className="text-gray-400 leading-relaxed text-lg">
-                  {product.description || 'توضیحات محصول به زودی اضافه می‌شود.'}
+                <p className="text-gray-700 dark:text-gray-400 leading-relaxed text-lg transition-colors duration-300">
+                  {productToDisplay.description || 'توضیحات محصول به زودی اضافه می‌شود.'}
                 </p>
               </div>
 
-              <div className="border-t border-gray-800 pt-8 space-y-4">
-                <AddToCartButton product={product} />
+              <div className="border-t border-gray-300 dark:border-gray-800 pt-8 space-y-4 transition-colors duration-300">
+                <AddToCartButton product={productToDisplay} />
 
                 <p className="text-center text-xs text-gray-600 mt-4">
                   ارسال رایگان برای خریدهای بالای ۲ میلیون تومان
@@ -91,6 +103,22 @@ export default async function ProductPage({ params }: { params: Promise<{ slug: 
 
             </div>
           </div>
+
+          {/* Related Products Section */}
+          {relatedProducts.length > 0 && (
+            <div className="mt-24 border-t border-gray-300 dark:border-gray-800 pt-16 transition-colors duration-300">
+              <h2 className="text-2xl font-bold text-gray-900 dark:text-white mb-8 flex items-center gap-3 transition-colors duration-300">
+                <span className="h-3 w-3 bg-neon-pink rounded-full glow-pink inline-block animate-pulse-fast"></span>
+                شاید بپسندید
+              </h2>
+              <div className="grid grid-cols-1 gap-8 sm:grid-cols-2 lg:grid-cols-4">
+                {relatedProducts.map(p => (
+                  <ProductCard key={p.id} product={p} />
+                ))}
+              </div>
+            </div>
+          )}
+
         </div>
       </main>
 

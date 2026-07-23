@@ -2,6 +2,8 @@ import { supabase } from '@/lib/supabase';
 import ProductCard from '@/components/ProductCard';
 import Header from '@/components/Header';
 import Footer from '@/components/Footer';
+import { dummyProducts } from '@/lib/dummyData';
+import Link from 'next/link';
 
 export const revalidate = 0;
 
@@ -10,59 +12,6 @@ export default async function Home() {
     .from('products')
     .select('*')
     .order('created_at', { ascending: false });
-
-  // Fallback to dummy data if database is empty so you can see your uploaded images
-  const dummyProducts = [
-    {
-      id: 'dummy-1',
-      title: 'گردنبند صلیب گوهر سرخ',
-      slug: 'gothic-red-stone-cross',
-      price: 850000,
-      image_url: '/images/products/photo_1.jpg'
-    },
-    {
-      id: 'dummy-2',
-      title: 'گردنبند چارم Y2K',
-      slug: 'y2k-charm-statement',
-      price: 720000,
-      image_url: '/images/products/photo_2.jpg'
-    },
-    {
-      id: 'dummy-3',
-      title: 'گردنبند کازینو رویال',
-      slug: 'casino-royale-charm',
-      price: 790000,
-      image_url: '/images/products/photo_3.jpg'
-    },
-    {
-      id: 'dummy-4',
-      title: 'گردنبند صلیب شاین صورتی',
-      slug: 'pink-sparkle-cross',
-      price: 820000,
-      image_url: '/images/products/photo_4.jpg'
-    },
-    {
-      id: 'dummy-5',
-      title: 'گردنبند خفاش و پنتاگرام',
-      slug: 'bat-pentagram-gothic',
-      price: 890000,
-      image_url: '/images/products/photo_5.jpg'
-    },
-    {
-      id: 'dummy-6',
-      title: 'گردنبند لایه‌ای مروارید و صلیب',
-      slug: 'silver-cross-pearl',
-      price: 950000,
-      image_url: '/images/products/photo_6.jpg'
-    },
-    {
-      id: 'dummy-7',
-      title: 'گردنبند خون‌آشام',
-      slug: 'vampire-red-oval',
-      price: 880000,
-      image_url: '/images/products/photo_7.jpg'
-    }
-  ];
 
   const displayProducts = products && products.length > 0 ? products : dummyProducts;
 
@@ -85,6 +34,45 @@ export default async function Home() {
             <button className="cyber-cut border border-neon-pink bg-white/80 dark:bg-black/50 backdrop-blur-sm text-neon-pink font-bold px-8 py-3 transition-all duration-300 hover:bg-neon-pink hover:text-white hover:glow-pink transform hover:scale-105">
               مشاهده محصولات
             </button>
+          </div>
+        </section>
+
+        {/* Marquee Banner */}
+        <div className="w-full bg-neon-pink text-black py-3 overflow-hidden border-y border-white/20 dark:border-black/20 flex whitespace-nowrap">
+          <div className="animate-marquee inline-block font-black tracking-widest text-sm md:text-base">
+            <span className="mx-4">🔥 ارسال رایگان خریدهای بالای ۲ میلیون تومان 🔥</span>
+            <span className="mx-4">///</span>
+            <span className="mx-4 font-mono">100% ORIGINAL DESIGN</span>
+            <span className="mx-4">///</span>
+            <span className="mx-4">طراحی شده برای عصر دیجیتال</span>
+            <span className="mx-4">///</span>
+            <span className="mx-4 font-mono">CYBERPUNK AESTHETICS</span>
+            <span className="mx-4">///</span>
+            <span className="mx-4">🔥 ارسال رایگان خریدهای بالای ۲ میلیون تومان 🔥</span>
+            <span className="mx-4">///</span>
+            <span className="mx-4 font-mono">100% ORIGINAL DESIGN</span>
+            <span className="mx-4">///</span>
+            <span className="mx-4">طراحی شده برای عصر دیجیتال</span>
+            <span className="mx-4">///</span>
+            <span className="mx-4 font-mono">CYBERPUNK AESTHETICS</span>
+          </div>
+        </div>
+
+        {/* Featured Categories */}
+        <section className="container mx-auto px-4 py-16">
+          <div className="grid grid-cols-2 md:grid-cols-4 gap-4">
+            {['گردنبند', 'انگشتر', 'دستبند', 'اکسسوری'].map((category) => (
+              <Link 
+                href="/shop" 
+                key={category}
+                className="group relative h-32 flex items-center justify-center overflow-hidden cyber-cut border border-gray-300 dark:border-gray-800 bg-gray-50 dark:bg-gray-900/50 hover:border-neon-pink transition-all duration-300"
+              >
+                <div className="absolute inset-0 bg-neon-pink/0 group-hover:bg-neon-pink/10 transition-colors duration-300" />
+                <span className="relative z-10 text-xl font-bold text-gray-900 dark:text-white group-hover:text-neon-pink transition-colors duration-300">
+                  {category}
+                </span>
+              </Link>
+            ))}
           </div>
         </section>
 
